@@ -4,20 +4,22 @@
 /**
  *
  *
- * @file
- * @brief
+ * @file logger.c
+ * @brief Source file with logger functions implementation.
  *
  **********************************************************************************************************************/
 
 
 /* INCLUDES ***********************************************************************************************************/
 #include "logger.h"
+
 /* Definitions ********************************************************************************************************/
 #define LOGGER_NO_FILE
 #define LOGGER_NO_THREAD
 #define LOGGER_COLOR
 
 #ifdef LOGGER_COLOR
+
 #define RED             "\x1B[31m"
 #define GREEN           "\x1B[32m"
 #define BLUE            "\x1B[35m"
@@ -59,9 +61,11 @@ typedef struct  Logger {         //808
 
 /* Local Variable Definitions *****************************************************************************************/
 static Logger* logger;
+
 /* Static Function Declarations ***************************************************************************************/
 static void logger_print_terminal(void);
 static void logger_print(void);
+
 /* Global Function Definitions ****************************************************************************************/
 void logger_init(const char* filename) {
     logger = malloc(sizeof(Logger));
@@ -98,7 +102,6 @@ void logger_init(const char* filename) {
     fprintf(logger->file, VERSION);
     fprintf(logger->file, "\n");
     fprintf(logger->file, "Created: %s %s\n\n", __DATE__, __TIME__);
-
 
     logger->open = true;
 }

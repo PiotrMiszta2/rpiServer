@@ -1,3 +1,4 @@
 build/
 template.txt
 commit_template.txt
+.vscode/

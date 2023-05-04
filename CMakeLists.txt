@@ -11,7 +11,7 @@ include_directories(${INCLUDE_DIR}/server
                     ${INCLUDE_DIR}/util
                     ${INCLUDE_DIR}/messages
                     ${INCLUDE_DIR}/serial
-                    ${INCLUDE_DIR}/common_memory)
+                    ${INCLUDE_DIR}/common)
 
 file(GLOB message_src
         "${SOURCE_DIR}/messages/*.c")
@@ -21,13 +21,13 @@ file(GLOB server_src
         "${SOURCE_DIR}/server/*.c")
 file(GLOB serial_src
         "${SOURCE_DIR}/serial/*.c")
-file(GLOB common_memory_src
-        "${SOURCE_DIR}/common_memory/*.c")
+file(GLOB common_src
+        "${SOURCE_DIR}/common/*.c")
 
 add_executable(raspberry    src/main.c
                             ${message_src}
                             ${util_src}
                             ${server_src}
                             ${serial_src}
-                            ${common_memory_src}
+                            ${common_src}
 )

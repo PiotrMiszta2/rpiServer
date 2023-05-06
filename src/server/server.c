@@ -8,8 +8,6 @@
  * @brief
  *
  **********************************************************************************************************************/
-
-
 /* INCLUDES ***********************************************************************************************************/
 #include "server.h"
 #include "logger.h"
@@ -65,10 +63,6 @@ void server_listen(void)
     {
         //TODO: create semaphore that will be increment when thread will end job
         connectionS_p = server_allocate_connection();
-        if(!connectionS_p)
-        {
-            return;
-        }
         connectionS_p->sock = accept(serverS_p->sock, &connectionS_p->address, &connectionS_p->addr_len);
         if (connectionS_p->sock <= 0)
         {

@@ -36,7 +36,6 @@ typedef struct ServerConnectionS{
     int sock;
     struct sockaddr address;
     socklen_t addr_len;
-    size_t index;
 }ServerConnectionS;
 static_assert(sizeof(ServerConnectionS) ==
     (sizeof(int) + sizeof(struct sockaddr) + sizeof(socklen_t) + sizeof(size_t)), "Padding ServerConnectionS");

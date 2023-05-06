@@ -13,7 +13,7 @@
 #include "client_handler.h"
 #include "common_signal.h"
 #include "server.h"
-#include "queue.h"
+#include "util.h"
 /* Type Declarations **************************************************************************************************/
 typedef struct ClientHandler_msg {
     size_t len;
@@ -28,9 +28,7 @@ typedef struct ClientHandlerSignalS
 /* Definitions ********************************************************************************************************/
 
 /* Global Variable Definitions ****************************************************************************************/
-//TODO: (piotr) int for debug
-static int nrClient; //only for debug
-static Queue* client_handler_signal_que;
+
 /* Local Variable Definitions *****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
@@ -39,11 +37,7 @@ static void ClientHandler_handle_msg_request(char* msg);
 static void ClientHandler_write(ServerConnectionS* conn, ClientHandler_msg* msg);
 static void ClientHandler_parse_msg(char* msg);
 /* Global Function Definitions ****************************************************************************************/
-void client_handler_init(void)
-{
-//TODO: CHECK leak memory
-    client_handler_signal_que = queue_create(NULL);
-}
+
 
 /* <<< Function clientHandler_start_thread */
 /**
@@ -51,45 +45,45 @@ void client_handler_init(void)
  *          to the server only one thing what clientHandler
  *          must do, iis comunicating with client, and
  *          creating new threads for doing things for client.
- * @param arg NULL
+ * @param arg pointer to ServerConnectionS cast to void*
  * @return NULL
  ***********************************************************/
 void* clientHandler_start_thread(void* arg)
 {
+    uint8_t threadId = 0;
+    if(arg)
+    {
+        //threadId = *(uint8_t*)(arg);
+    }
     /* ** For debug ** */
-    nrClient++;
-    int k = nrClient;
 
-    ClientHandler_msg* recvMsg = malloc(sizeof(ClientHandler_msg));
-    ClientHandler_msg* writeMsg = malloc(sizeof(ClientHandler_msg));
+    ClientHandler_msg* recvMsg = calloc(1, sizeof(ClientHandler_msg));
+    ClientHandler_msg* writeMsg = calloc(1, sizeof(ClientHandler_msg));
 
     ServerConnectionS * conn = (ServerConnectionS *)arg;
+    threadId = conn -> id;
     //TODO: (Piotr) end loop
     for(int i = 0;i < 100; i++)
     {
         /*  Reading, writing for debug and doing requst msg, its all */
         ClientHandler_read(conn, recvMsg);
-        printf("[DEBUG] %d %s\n", k,  recvMsg->buffer);
+        LOG_DEBUG("Server recaived msg from client: received a msg: Thread: %d, received msg %s", threadId, recvMsg);
+
         ClientHandler_handle_msg_request(recvMsg->buffer);
         const char buff[] = "Test debug";
         memcpy(writeMsg->buffer, buff, sizeof(buff));
         writeMsg->len = sizeof(buff);
         ClientHandler_write(conn, writeMsg);
-        common_signal_send(5, NULL);
+
+        int* k = malloc(sizeof(int));
+        *k = 5;
+        SignalS* signal = common_signal_add_payload(k, sizeof(int));
+        common_signal_send(5, signal);
     }
 
     close(conn->sock);
     free(conn);
     pthread_exit(0);
-}
-
-void client_handler_signal_add_to_queue(SignalS * signal, uint8_t id)
-{
-    ClientHandlerSignalS* sig = malloc(sizeof(ClientHandlerSignalS));
-    assert(sig);
-    sig->signal = signal;
-    sig->id = id;
-    queue_push_back(client_handler_signal_que, sig);
 }
 
 /* Static Function Definitions ****************************************************************************************/

@@ -36,8 +36,6 @@
  * @return NULL
  */
 void* clientHandler_start_thread(void* arg);
-void client_handler_signal_add_to_queue(SignalS * sig, uint8_t id);
-void client_handler_init(void);
 //TODO: void client_handler_handle_signal(void);
 #endif //RASPBERRY_CLIENTHANDLER_H
 

@@ -98,4 +98,12 @@ void common_signal_send(uint8_t id, SignalS* payload)
     }
 
 }
+
+void common_signal_free(const SignalS* sig)
+{
+    if(sig)
+    {
+        free(sig->data);
+    }
+}
 /* Static Function Definitions ****************************************************************************************/

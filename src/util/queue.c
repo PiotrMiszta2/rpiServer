@@ -106,18 +106,30 @@ void queue_push_back(Queue* que, void* data)
 
 void* queue_pop(Queue* que)
 {
-    NodeS* temp = que->head;
-    que->head = que->head->next;
-    void* ptr = temp->data_p;
-    free(temp);
-    que->size--;
-    return ptr;
+    if(que)
+    {
+        NodeS* temp = que->head;
+        que->head = que->head->next;
+        void* ptr = temp->data_p;
+        free(temp);
+        que->size--;
+        return ptr;
+    }
+    else
+    {
+        return NULL;
+    }
+
+
 }
 
 bool queue_empty(Queue* que)
 {
-    assert(que);
-    if(que->size == 0)
+    if(!que)
+    {
+        return true;
+    }
+    else if(que->size == 0)
     {
         return true;
     }

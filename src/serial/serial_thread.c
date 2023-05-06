@@ -12,7 +12,8 @@
 /* INCLUDES ***********************************************************************************************************/
 #include "serial_thread.h"
 #include "serial_signal.h"
-#include "common_signal.h"
+#include "common.h"
+
 /* Definitions ********************************************************************************************************/
 
 /* Type Declarations **************************************************************************************************/
@@ -26,10 +27,12 @@
 /* Global Function Definitions ****************************************************************************************/
 void* serial_thread_start(void* arg)
 {
-    /* arg need to have id of thread */
+    /* TODO: arg need to have id of thread */
+    uint8_t threadId = (*(uint8_t*)(arg));
+
     while(1)
     {
-        /* check signal */
+        /* check signal and handle it */
         if(serial_signal_check_signal(5))
         {
             LOG_INFO("Signal is waiting in queue\n");
@@ -37,5 +40,13 @@ void* serial_thread_start(void* arg)
             serial_signal_handler(signal);
         }
     }
+    /* here thread will end*/
 }
+
+void serial_signal_handler(SignalS* signal)
+{
+    LOG_DEBUG("Handling signal");
+
+}
+
 /* Static Function Definitions ****************************************************************************************/

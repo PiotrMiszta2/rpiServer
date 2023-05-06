@@ -24,27 +24,11 @@
 /* Definitions ********************************************************************************************************/
 
 /* Type Declarations **************************************************************************************************/
-//FIXME: check this struct must be public: declared in header file or source file
-/**
- * @struct  ThreadS
- * @brief   ThreadS is struct for handling thread
- *          and thread id which is equal to index in dll
- *          there is easiest way to identity which thread
- *          end own job and want to free memory
- */
-typedef struct ThreadS {
-    pthread_t thread;   //8
-    size_t index;       //8
-    /* no padded */
-}ThreadS;
-static_assert(sizeof(ThreadS) == (sizeof(pthread_t) + sizeof(size_t)), "Padding ThreadS");
-
 typedef struct ServerS {
     struct sockaddr_in      address;        //16
-    DoubleLinkedList*       threads;        //8
     int                     sock;           //4
-    char                    padded__[4];    //4
-}ServerS;                                   //32
+    char                    padded__[12];    //4
+}ServerS;                                   //24
 static_assert(sizeof(ServerS) ==
     (sizeof(struct sockaddr_in) + sizeof(DoubleLinkedList*) + sizeof(int) + sizeof(char[4])), "Padding ServerS");
 
@@ -80,5 +64,5 @@ void server_listen(void);
 */
 //        TODO: not implemented yet
 void server_end_thread(size_t id);
-
+void server_wait_for_threads(void);
 #endif //RASPBERRY_SERVER_H

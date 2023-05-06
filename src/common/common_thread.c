@@ -26,7 +26,7 @@ DoubleLinkedList* commonThreadList;
 /* Local Variable Definitions *****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
-static inline int custom_thread_list_compare(void* arg, void* arg2)
+static inline int common_thread_list_compare(void* arg, void* arg2)
 {
     CommonThreadS* n = arg;
     CommonThreadS* m = arg2;
@@ -38,7 +38,7 @@ static inline int custom_thread_list_compare(void* arg, void* arg2)
         return 0;
 }
 
-static inline CommonThreadS* custom_thread_create(const uint8_t i)
+static inline CommonThreadS* common_thread_alloc(const uint8_t i)
 {
     CommonThreadS* thread = malloc(sizeof(CommonThreadS));
     assert(thread);
@@ -48,7 +48,7 @@ static inline CommonThreadS* custom_thread_create(const uint8_t i)
 /* Global Function Definitions ****************************************************************************************/
 void common_thread_init(void)
 {
-    commonThreadList = dll_create(NULL, custom_thread_list_compare);
+    commonThreadList = dll_create(NULL, common_thread_list_compare);
 }
 int common_thread_create(   pthread_t *restrict thread,
                             const pthread_attr_t *restrict attr,
@@ -64,10 +64,14 @@ int common_thread_create(   pthread_t *restrict thread,
     else
     {
         LOG_INFO("Thread %d created", id);
-        dll_push_back(commonThreadList, (void*)(custom_thread_create(id)));
+        dll_push_back(commonThreadList, (void*)(common_thread_alloc(id)));
     }
-    CommonThreadS* c = custom_thread_create(10);
-    printf("%d\n\n",dll_find(commonThreadList, c));
     return x;
+}
+
+int common_thread_check(uint8_t id)
+{
+    CommonThreadS* thread = common_thread_alloc(id);
+    return dll_find(commonThreadList, (void*)(thread));
 }
 /* Static Function Definitions ****************************************************************************************/

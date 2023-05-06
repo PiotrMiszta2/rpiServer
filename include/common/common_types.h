@@ -14,18 +14,21 @@
 
 /* INCLUDES ***********************************************************************************************************/
 #include <stdlib.h>
-#include <stdint.h>
 #include <assert.h>
+#include "common_signal.h"
 /* Definitions ********************************************************************************************************/
 
 /* Type Declarations **************************************************************************************************/
-typedef struct SignalS SignalS;
+typedef struct CommonSignalToMicroS
+{
+    SignalS* signal;
+    uint8_t thread;
+}CommonSignalToMicroS;
 /* Global Variable Definitions ****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
 
 /* Global Function Declarations ***************************************************************************************/
-SignalS* common_signal_add_payload(void* payload, size_t size);
-void* common_signal_get_payload(SignalS* signal);
-void common_signal_send(uint8_t id, SignalS* payload);
+CommonSignalToMicroS* common_signal_to_micro_create(SignalS* signal, uint8_t thread);
+
 #endif //RASPBERRY_COMMON_TYPES_H

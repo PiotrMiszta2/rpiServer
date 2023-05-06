@@ -38,7 +38,7 @@ typedef struct ServerConnectionS{
     socklen_t addr_len;
 }ServerConnectionS;
 static_assert(sizeof(ServerConnectionS) ==
-    (sizeof(int) + sizeof(struct sockaddr) + sizeof(socklen_t) + sizeof(size_t)), "Padding ServerConnectionS");
+    (sizeof(int) + sizeof(struct sockaddr) + sizeof(socklen_t)), "Padding ServerConnectionS");
 
 /* Global Variable Definitions ****************************************************************************************/
 
@@ -57,11 +57,4 @@ void server_start(void);
 */
 void server_listen(void);
 
-/**
- * @brief   search and end thread with no connection
- *
-*/
-//        TODO: not implemented yet
-void server_end_thread(size_t id);
-void server_wait_for_threads(void);
 #endif //RASPBERRY_SERVER_H

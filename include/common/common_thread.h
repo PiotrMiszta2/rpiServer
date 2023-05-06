@@ -17,6 +17,7 @@
 #include <stdint.h>
 /* Definitions ********************************************************************************************************/
 #define COMMON_THREADS_CLIENT_THREAD_OFFSET     10
+#define COMMON_THREADS_SERIAL_THREAD_OFFSET     5
 /* Type Declarations **************************************************************************************************/
 
 /* Global Variable Definitions ****************************************************************************************/
@@ -30,6 +31,6 @@ int common_thread_create(   pthread_t *restrict thread,
                             void*(*start_runtine)(void *),
                             void *restrict arg,
                             const uint8_t id ); //this should be stored in queue
-
+int common_thread_check(uint8_t id);
 
 #endif //RASPBERRY_COMMON_THREAD_H

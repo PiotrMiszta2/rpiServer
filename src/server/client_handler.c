@@ -11,6 +11,7 @@
 
 /* INCLUDES ***********************************************************************************************************/
 #include "client_handler.h"
+#include "common_signal.h"
 #include "server.h"
 /* Type Declarations **************************************************************************************************/
 typedef struct ClientHandler_msg {
@@ -60,6 +61,7 @@ void* clientHandler_start_thread(void* arg)
         memcpy(writeMsg->buffer, buff, sizeof(buff));
         writeMsg->len = sizeof(buff);
         ClientHandler_write(conn, writeMsg);
+        common_signal_send(7, NULL);
     }
 
     close(conn->sock);

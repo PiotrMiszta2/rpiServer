@@ -30,9 +30,9 @@ static inline int custom_thread_list_compare(void* arg, void* arg2)
 {
     CommonThreadS* n = arg;
     CommonThreadS* m = arg2;
-    if ( n < m)
+    if ( n->index < m->index)
         return -1;
-    else if( n > m)
+    else if( n->index > m->index)
         return 1;
     else
         return 0;
@@ -66,6 +66,8 @@ int common_thread_create(   pthread_t *restrict thread,
         LOG_INFO("Thread %d created", id);
         dll_push_back(commonThreadList, (void*)(custom_thread_create(id)));
     }
+    CommonThreadS* c = custom_thread_create(10);
+    printf("%d\n\n",dll_find(commonThreadList, c));
     return x;
 }
 /* Static Function Definitions ****************************************************************************************/

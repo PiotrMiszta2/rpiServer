@@ -13,7 +13,7 @@
 /* INCLUDES ***********************************************************************************************************/
 #include <stdlib.h>
 #include <assert.h>
-
+#include "logger.h"
 #include "queue.h"
 /* Definitions ********************************************************************************************************/
 
@@ -54,7 +54,10 @@ Queue* queue_create(void (*functionFree)(void*))
         que->fun = functionFree;
     return que;
 }
-
+size_t queue_sizeof(void)
+{
+    return sizeof(Queue);
+}
 void queue_destroy(Queue* que)
 {
     if(!que)
@@ -113,6 +116,7 @@ void* queue_pop(Queue* que)
 
 bool queue_empty(Queue* que)
 {
+    assert(que);
     if(que->size == 0)
     {
         return true;

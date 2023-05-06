@@ -13,6 +13,7 @@
 #include "common_signal.h"
 #include "common_thread.h"
 #include "logger.h"
+#include "serial_signal.h"
 #include <assert.h>
 /* Definitions ********************************************************************************************************/
 
@@ -78,6 +79,21 @@ void common_signal_send(uint8_t id, SignalS* payload)
     else
     {
         LOG_INFO("Sending signal to %d thread\n", id);
+        /* NOTE:    switch wich function we want to call
+         *          based on thread id but we need to
+         *          check if threads are multiply instance
+         *          so we need to push thread id and signal
+         *          to specify queue
+         * */
+        if(id >= COMMON_THREADS_SERIAL_THREAD_OFFSET && id < COMMON_THREADS_CLIENT_THREAD_OFFSET)
+        {
+            LOG_DEBUG("call serial_signal_add_to_queue()");
+            serial_signal_add_to_queue(payload, id);
+        }
+        else if (id >= COMMON_THREADS_CLIENT_THREAD_OFFSET && id < COMMON_THREADS_CLIENT_THREAD_OFFSET + 5)
+        {
+            //client_handler_signal_add_to_queue(payload, id);
+        }
         return;
     }
 

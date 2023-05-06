@@ -13,16 +13,24 @@
 #include "client_handler.h"
 #include "common_signal.h"
 #include "server.h"
+#include "queue.h"
 /* Type Declarations **************************************************************************************************/
 typedef struct ClientHandler_msg {
     size_t len;
     char buffer[CLIENT_HANDLER_BUFFER_MAX_LEN];
 }ClientHandler_msg;
+
+typedef struct ClientHandlerSignalS
+{
+    SignalS* signal;
+    uint8_t id;
+}ClientHandlerSignalS;
 /* Definitions ********************************************************************************************************/
 
 /* Global Variable Definitions ****************************************************************************************/
 //TODO: (piotr) int for debug
 static int nrClient; //only for debug
+static Queue* client_handler_signal_que;
 /* Local Variable Definitions *****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
@@ -31,6 +39,12 @@ static void ClientHandler_handle_msg_request(char* msg);
 static void ClientHandler_write(ServerConnectionS* conn, ClientHandler_msg* msg);
 static void ClientHandler_parse_msg(char* msg);
 /* Global Function Definitions ****************************************************************************************/
+void client_handler_init(void)
+{
+//TODO: CHECK leak memory
+    client_handler_signal_que = queue_create(NULL);
+}
+
 /* <<< Function clientHandler_start_thread */
 /**
  * @brief   Function is called when new client connect
@@ -61,13 +75,23 @@ void* clientHandler_start_thread(void* arg)
         memcpy(writeMsg->buffer, buff, sizeof(buff));
         writeMsg->len = sizeof(buff);
         ClientHandler_write(conn, writeMsg);
-        common_signal_send(7, NULL);
+        common_signal_send(5, NULL);
     }
 
     close(conn->sock);
     free(conn);
     pthread_exit(0);
 }
+
+void client_handler_signal_add_to_queue(SignalS * signal, uint8_t id)
+{
+    ClientHandlerSignalS* sig = malloc(sizeof(ClientHandlerSignalS));
+    assert(sig);
+    sig->signal = signal;
+    sig->id = id;
+    queue_push_back(client_handler_signal_que, sig);
+}
+
 /* Static Function Definitions ****************************************************************************************/
 void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg)
 {

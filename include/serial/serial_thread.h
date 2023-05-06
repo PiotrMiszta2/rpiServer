@@ -1,27 +1,22 @@
-#ifndef RASPBERRY_CLIENTHANDLER_H
-#define RASPBERRY_CLIENTHANDLER_H
+#ifndef RASPBERRY_SERIAL_THREAD_H
+#define RASPBERRY_SERIAL_THREAD_H
 /**
  * Copyright
  **********************************************************************************************************************/
 /**
  *
  *
- * @file ClientHandler.h
- * @brief Header file for interface between Client and Server
+ * @file
+ * @brief
  *
  **********************************************************************************************************************/
 
 
 /* INCLUDES ***********************************************************************************************************/
-#include <string.h>
+#include "common_thread.h"
+#include "logger.h"
 #include <stdint.h>
-#include "common_signal.h"
-#include "server_defs.h"
 /* Definitions ********************************************************************************************************/
-/**
- * @def CLIENT_HANDLER_BUFFER_MAX_LEN
- * @brief max len of msg sending by client
- */
 
 /* Type Declarations **************************************************************************************************/
 
@@ -30,14 +25,5 @@
 /* Static Function Declarations ***************************************************************************************/
 
 /* Global Function Declarations ***************************************************************************************/
-/**
- * @brief   function clientHandler_start_thread
- *          starting thread after client connect to server
- * @return NULL
- */
-void* clientHandler_start_thread(void* arg);
-void client_handler_signal_add_to_queue(SignalS * sig, uint8_t id);
-void client_handler_init(void);
-//TODO: void client_handler_handle_signal(void);
-#endif //RASPBERRY_CLIENTHANDLER_H
-
+void* serial_thread_start(void* arg);
+#endif //RASPBERRY_SERIAL_THREAD_H

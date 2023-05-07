@@ -1,5 +1,5 @@
-#ifndef RASPBERRY_COMMON_TYPES_H
-#define RASPBERRY_COMMON_TYPES_H
+#ifndef RASPBERRY_SERIAL_THREAD_H
+#define RASPBERRY_SERIAL_THREAD_H
 /**
  * Copyright
  **********************************************************************************************************************/
@@ -13,20 +13,18 @@
 
 
 /* INCLUDES ***********************************************************************************************************/
-#include <stdlib.h>
+#include "common.h"
+#include "util.h"
 #include <stdint.h>
-#include <assert.h>
 /* Definitions ********************************************************************************************************/
 
 /* Type Declarations **************************************************************************************************/
-typedef struct SignalS SignalS;
+
 /* Global Variable Definitions ****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
 
 /* Global Function Declarations ***************************************************************************************/
-SignalS* common_signal_add_payload(void* payload, size_t size);
-void* common_signal_get_payload(SignalS* signal);
-void common_signal_send(uint8_t id, SignalS* payload);
-void common_signal_free(const SignalS* sig);
-#endif //RASPBERRY_COMMON_TYPES_H
+void* serial_thread_start(void* arg);
+void serial_signal_handler(SignalS* signal);
+#endif //RASPBERRY_SERIAL_THREAD_H

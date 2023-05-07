@@ -14,6 +14,8 @@
 
 /* INCLUDES ***********************************************************************************************************/
 #include <string.h>
+#include <stdint.h>
+#include "common_signal.h"
 #include "server_defs.h"
 /* Definitions ********************************************************************************************************/
 /**
@@ -34,6 +36,6 @@
  * @return NULL
  */
 void* clientHandler_start_thread(void* arg);
-
+//TODO: void client_handler_handle_signal(void);
 #endif //RASPBERRY_CLIENTHANDLER_H
 

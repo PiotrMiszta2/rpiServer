@@ -1,5 +1,5 @@
-#ifndef RASPBERRY_COMMON_TYPES_H
-#define RASPBERRY_COMMON_TYPES_H
+#ifndef RASPBERRY_UTIL_H
+#define RASPBERRY_UTIL_H
 /**
  * Copyright
  **********************************************************************************************************************/
@@ -13,20 +13,17 @@
 
 
 /* INCLUDES ***********************************************************************************************************/
-#include <stdlib.h>
-#include <stdint.h>
-#include <assert.h>
+#include "double_linked_list.h"
+#include "queue.h"
+#include "logger.h"
 /* Definitions ********************************************************************************************************/
 
 /* Type Declarations **************************************************************************************************/
-typedef struct SignalS SignalS;
+
 /* Global Variable Definitions ****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
 
 /* Global Function Declarations ***************************************************************************************/
-SignalS* common_signal_add_payload(void* payload, size_t size);
-void* common_signal_get_payload(SignalS* signal);
-void common_signal_send(uint8_t id, SignalS* payload);
-void common_signal_free(const SignalS* sig);
-#endif //RASPBERRY_COMMON_TYPES_H
+
+#endif //RASPBERRY_UTIL_H

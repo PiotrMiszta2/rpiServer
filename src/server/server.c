@@ -8,8 +8,6 @@
  * @brief
  *
  **********************************************************************************************************************/
-
-
 /* INCLUDES ***********************************************************************************************************/
 #include "server.h"
 #include "logger.h"
@@ -65,10 +63,6 @@ void server_listen(void)
     {
         //TODO: create semaphore that will be increment when thread will end job
         connectionS_p = server_allocate_connection();
-        if(!connectionS_p)
-        {
-            return;
-        }
         connectionS_p->sock = accept(serverS_p->sock, &connectionS_p->address, &connectionS_p->addr_len);
         if (connectionS_p->sock <= 0)
         {
@@ -120,7 +114,7 @@ void server_create_serverS(void)
 ServerConnectionS* server_allocate_connection(void)
 {
     ServerConnectionS* connectionS_p;
-    connectionS_p = (ServerConnectionS *)malloc(sizeof(*connectionS_p));
+    connectionS_p = (ServerConnectionS *)calloc(1, sizeof(*connectionS_p));
     assert(connectionS_p);
     LOG_INFO("Allocating connection struct for incoming client");
     return connectionS_p;
@@ -128,6 +122,7 @@ ServerConnectionS* server_allocate_connection(void)
 
 int server_start_thread(ServerConnectionS* connectionS_p)
 {
+    connectionS_p->id = numberOfClients + COMMON_THREADS_CLIENT_THREAD_OFFSET;
     if (common_thread_create(&client_thread[numberOfClients],
                        NULL,
                        clientHandler_start_thread,
@@ -146,4 +141,11 @@ int server_start_thread(ServerConnectionS* connectionS_p)
     }
 }
 
-
+void* server_thread(void* arg)
+{
+    while(1)
+    {
+        server_start();
+        server_listen();
+    }
+}

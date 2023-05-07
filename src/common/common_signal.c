@@ -11,6 +11,9 @@
 
 /* INCLUDES ***********************************************************************************************************/
 #include "common_signal.h"
+#include "common_thread.h"
+#include "logger.h"
+#include "serial_signal.h"
 #include <assert.h>
 /* Definitions ********************************************************************************************************/
 
@@ -49,5 +52,58 @@ void* common_signal_get_payload(SignalS* signal)
 {
     assert(signal);
     return signal->data;
+}
+
+void common_signal_send(uint8_t id, SignalS* payload)
+{
+    /* NOTE: need to send signal to thread
+     * each module need to have handler for signal and queue for incoming signals
+     * now we have only communicate between client_handlers threads and serial threads
+     * but do this generic
+     * //TODO: do signal handlling generic
+     * */
+
+    /* NOTE:    this function is call when we want to send payload to another thread
+     *          we specify thread id, for example COMMON_THREADS_SERIAL_THREAD_OFFSET (5)
+     *          so we want to signaling first of serial thread,
+     *          if we have id of thread we need to call function in common_thread which should have
+     *          this thread in table, check it that this thread exist
+     * */
+    if(common_thread_check(id) < 0)
+    {
+        LOG_ERROR("Thread %d dont exist, dont send signal, free payload\n", id);
+        //TODO: check payload bcs maybe will be leak on data
+        free(payload);
+        return;
+    }
+    else
+    {
+        LOG_INFO("Sending signal to %d thread\n", id);
+        /* NOTE:    switch wich function we want to call
+         *          based on thread id but we need to
+         *          check if threads are multiply instance
+         *          so we need to push thread id and signal
+         *          to specify queue
+         * */
+        if(id >= COMMON_THREADS_SERIAL_THREAD_OFFSET && id < COMMON_THREADS_CLIENT_THREAD_OFFSET)
+        {
+            LOG_DEBUG("call serial_signal_add_to_queue()");
+            serial_signal_add_to_queue(payload, id);
+        }
+        else if (id >= COMMON_THREADS_CLIENT_THREAD_OFFSET && id < COMMON_THREADS_CLIENT_THREAD_OFFSET + 5)
+        {
+            //client_handler_signal_add_to_queue(payload, id);
+        }
+        return;
+    }
+
+}
+
+void common_signal_free(const SignalS* sig)
+{
+    if(sig)
+    {
+        free(sig->data);
+    }
 }
 /* Static Function Definitions ****************************************************************************************/

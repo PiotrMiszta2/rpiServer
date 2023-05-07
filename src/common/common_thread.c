@@ -22,7 +22,7 @@ typedef struct CommonThreadS
     uint8_t index;
 }CommonThreadS;
 /* Global Variable Definitions ****************************************************************************************/
-DoubleLinkedList* commonThreadList;
+static DoubleLinkedList* commonThreadList;
 /* Local Variable Definitions *****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/

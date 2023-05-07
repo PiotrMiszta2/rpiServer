@@ -20,7 +20,7 @@
 /* Type Declarations **************************************************************************************************/
 static void function_to_free_if_null(void* arg)
 {
-    arg = NULL;
+    (void)(arg);
 }
 typedef struct NodeS
 {
@@ -144,8 +144,3 @@ size_t queue_get_size(Queue* que)
     return que->size;
 }
 /* Static Function Definitions ****************************************************************************************/
-
-
-
-
-

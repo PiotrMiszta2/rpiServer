@@ -33,10 +33,10 @@ void* serial_thread_start(void* arg)
     while(1)
     {
         /* check signal and handle it */
-        if(serial_signal_check_signal(5))
+        if(serial_signal_check_signal(threadId))
         {
             LOG_INFO("Signal is waiting in queue\n");
-            SignalS* signal = serial_signal_get(5);
+            SignalS* signal = serial_signal_get(threadId);
             serial_signal_handler(signal);
         }
     }
@@ -46,7 +46,7 @@ void* serial_thread_start(void* arg)
 void serial_signal_handler(SignalS* signal)
 {
     LOG_DEBUG("Handling signal");
-
+    (void)signal;
 }
 
 /* Static Function Definitions ****************************************************************************************/

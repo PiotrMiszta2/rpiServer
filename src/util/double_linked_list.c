@@ -265,10 +265,10 @@ void* dll_pop_forward(DoubleLinkedList* doubleLinkedList)
     }
 }
 
-void* dll_pop_index(DoubleLinkedList* doubleLinkedList, size_t index)
+/*void* dll_pop_index(DoubleLinkedList* doubleLinkedList, size_t index)
 {
     return NULL;
-}
+}*/
 
 int dll_find(DoubleLinkedList* doubleLinkedList, void* data)
 {
@@ -322,8 +322,3 @@ Node* dll_node_malloc(void)
     }
     return node;
 }
-
-
-
-
-

@@ -6,8 +6,9 @@
 #include "common_signal.h"
 #include "common_thread.h"
 #include "serial_thread.h"
+#include "messages.h"
 #include "queue.h"
-void init()
+static inline void init(void)
 {
     logger_init("log.log");
     common_thread_init();

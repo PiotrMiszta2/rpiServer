@@ -73,7 +73,8 @@ void* dll_pop_forward(DoubleLinkedList* doubleLinkedList);
  * @param index size_t index for data to pop
  * @return Returns data from node which was poped
  */
-void* dll_pop_index(DoubleLinkedList* doubleLinkedList, size_t index);
+//TODO: implement me
+//void* dll_pop_index(DoubleLinkedList* doubleLinkedList, size_t index);
 
 /**
  * @brief Deleting last element from list

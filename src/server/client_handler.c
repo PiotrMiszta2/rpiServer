@@ -69,8 +69,8 @@ void* clientHandler_start_thread(void* arg)
         ClientHandler_read(conn, recvMsg);
         LOG_DEBUG("Server recaived msg from client: received a msg: Thread: %d, received msg %s", threadId, recvMsg);
 
-        ClientHandler_handle_msg_request(recvMsg->buffer);
-        const char buff[] = "Test debug";
+       ClientHandler_handle_msg_request(recvMsg->buffer);
+       const char buff[] = "Test debug";
         memcpy(writeMsg->buffer, buff, sizeof(buff));
         writeMsg->len = sizeof(buff);
         ClientHandler_write(conn, writeMsg);

@@ -143,6 +143,7 @@ int server_start_thread(ServerConnectionS* connectionS_p)
 
 void* server_thread(void* arg)
 {
+    (void)arg;
     while(1)
     {
         server_start();

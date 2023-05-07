@@ -1,5 +1,5 @@
-#ifndef RASPBERRY_UTIL_H
-#define RASPBERRY_UTIL_H
+#ifndef RASPBERRY_MESSAGES_H
+#define RASPBERRY_MESSAGES_H
 /**
  * Copyright
  **********************************************************************************************************************/
@@ -13,9 +13,8 @@
 
 
 /* INCLUDES ***********************************************************************************************************/
-#include "double_linked_list.h"
-#include "queue.h"
-#include "logger.h"
+#include "messages_micro_req.h"
+#include "messages_types.h"
 /* Definitions ********************************************************************************************************/
 
 /* Type Declarations **************************************************************************************************/
@@ -26,4 +25,4 @@
 
 /* Global Function Declarations ***************************************************************************************/
 
-#endif //RASPBERRY_UTIL_H
+#endif //RASPBERRY_MESSAGES_H

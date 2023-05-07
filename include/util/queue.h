@@ -71,6 +71,5 @@ bool queue_empty(Queue* que);
 */
 size_t queue_get_size(Queue* que);
 size_t queue_sizeof(void);
+
 #endif //RASPBERRY_QUEUE_H
-
-

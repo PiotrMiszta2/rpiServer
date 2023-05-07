@@ -24,9 +24,9 @@
 
 /* Local Variable Definitions *****************************************************************************************/
 static Queue** signal_que;
-pthread_mutex_t* mutex;
-sem_t* queEmpty;
-sem_t* queFull;
+static pthread_mutex_t* mutex;
+static sem_t* queEmpty;
+static sem_t* queFull;
 /* Static Function Declarations ***************************************************************************************/
 static inline uint8_t getId(uint8_t id)
 {
@@ -103,6 +103,3 @@ void serial_signal_destroy(void)
     free(signal_que);
 }
 /* Static Function Definitions ****************************************************************************************/
-
-
-

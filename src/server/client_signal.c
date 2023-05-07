@@ -11,6 +11,7 @@
 
 /* INCLUDES ***********************************************************************************************************/
 #include "client_signal.h"
+#include "util.h"
 #include <pthread.h>
 /* Definitions ********************************************************************************************************/
 #define CLIENT_SIGNAL_MAX_THREADS   2
@@ -59,12 +60,12 @@ SignalS* client_signal_get(uint8_t id)
 void client_signal_handler(SignalS* signal)
 {
     LOG_DEBUG("Handling signal: client thread");
-
+    (void)signal;
 }
 
 void client_signal_destroy(void)
 {
-    for(size_t i = 0 ; i < SERIAL_SIGNAL_MAX_THREADS; i++)
+    for(size_t i = 0 ; i < CLIENT_SIGNAL_MAX_THREADS; i++)
     {
         queue_destroy(signal_que[i]);
     }

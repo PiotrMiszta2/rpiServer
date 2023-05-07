@@ -23,31 +23,25 @@ typedef enum MessageTypeE
     MESSAGE_TYPE_REQ,
     MESSAGE_TYPE_CFM,
     MESSAGE_TYPE_REJ,
+    MESSAGE_TYPE_NUL,
 }MessageTypeE;
 
-typedef struct MessageHeaderS
-{
-    uint32_t payloadSize;
-    uint8_t check;   //should be always 1, 0 for sending checking data
-    uint8_t type;    //CAST MessageTypeE to uint8_t
-    char ___padded[2];
-}MessageHeaderS;
-static_assert(  sizeof(MessageHeaderS) == \
-                sizeof(uint32_t) + sizeof(uint8_t) + sizeof(uint8_t) + sizeof(char[2]),
-                "MessageHeaderS padded");
+typedef struct MessageHeaderS MessageHeaderS;
 
-typedef struct MessageS
-{
-    MessageHeaderS header;
-    void* payload;
-}MessageS;
-static_assert(  sizeof(MessageS) == \
-                sizeof(MessageHeaderS) + sizeof(void*),
-                "MessageHeaderS padded");
+typedef struct MessageS MessageS;
+
 /* Global Variable Definitions ****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
 
 /* Global Function Declarations ***************************************************************************************/
+MessageS* message_create(MessageTypeE type, void* payload, size_t sizePayload);
+MessageTypeE message_get_type(MessageS* msg);
+void* message_get_payload(MessageS* msg);
+size_t message_get_size_payload(MessageS* msg);
+char* message_create_char(MessageS* msg);
+MessageS* message_create_from_char(char* msg);
+bool message_check(MessageS* msg);
+void message_free(MessageS* msg);
 
 #endif //RASPBERRY_MESSAGES_TYPES_H

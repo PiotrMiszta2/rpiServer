@@ -26,12 +26,12 @@
 
 #else
 
-#define RED     
-#define GREEN       
-#define BLUE        
+#define RED
+#define GREEN
+#define BLUE
 #define YELLOW
-#define RESET     
-   
+#define RESET
+
 #endif
 
 /* Type Declarations **************************************************************************************************/
@@ -248,11 +248,3 @@ void logger_print_terminal(void)
     fprintf(stdout, "\n");
     va_end(copyOfLogger);
 }
-
-
-
-
-
-
-
-

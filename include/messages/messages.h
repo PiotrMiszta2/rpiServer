@@ -1,5 +1,5 @@
 #ifndef RASPBERRY_MESSAGES_H
-#define RASPBERRY_MESSGAES_H
+#define RASPBERRY_MESSAGES_H
 /**
  * Copyright
  **********************************************************************************************************************/

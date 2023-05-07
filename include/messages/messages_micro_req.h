@@ -1,5 +1,5 @@
-#ifndef RASPBERRY_MESSAGES_REQ_MICRO_H
-#define RASPBERRY_MESSAGES_REQ_MICRO_H
+#ifndef RASPBERRY_MESSAGES_MICRO_REQ_H
+#define RASPBERRY_MESSAGES_MICRO_REQ_H
 /**
  * Copyright
  **********************************************************************************************************************/
@@ -24,7 +24,7 @@ typedef struct MessageMicroReq
 {
     uint16_t request;
     uint8_t micro;
-    uint8_t ___padded;
+    uint8_t _padded;
 }MessageMicroReq;
 //for all messages type need to static_assert padding
 static_assert(  sizeof(MessageMicroReq) ==  \

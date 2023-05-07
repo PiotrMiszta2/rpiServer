@@ -42,4 +42,5 @@ void serial_signal_add_to_queue(SignalS* signal, uint8_t id);
 int serial_signal_check_signal(uint8_t id);
 SignalS* serial_signal_get(uint8_t id);
 void serial_signal_destroy(void);
+
 #endif //RASPBERRY_SERIAL_SIGNAL_H

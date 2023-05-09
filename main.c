@@ -6,6 +6,7 @@
 #include "common_signal.h"
 #include "common_thread.h"
 #include "serial_thread.h"
+#include "messages_micro_req.h"
 #include "messages.h"
 #include "queue.h"
 static inline void init(void)

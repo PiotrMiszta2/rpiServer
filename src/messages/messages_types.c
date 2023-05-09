@@ -10,7 +10,7 @@
  **********************************************************************************************************************/
 
 /* INCLUDES ***********************************************************************************************************/
-#include "messages_types.h"
+#include "messages.h"
 #include <stdbool.h>
 /* Definitions ********************************************************************************************************/
 #define MESSAGES_MAX_LENGHT     (1024)
@@ -43,7 +43,7 @@ static_assert(  sizeof(MessageS) == \
 /* Static Function Declarations ***************************************************************************************/
 
 /* Global Function Definitions ****************************************************************************************/
-MessageS* message_create(MessageTypeE type, void* payload, size_t sizePayload)
+MessageS* message_create(MessageTypeE type, void* restrict payload, size_t sizePayload)
 {
     MessageS* msg = malloc(sizeof(MessageS));
     assert(msg);
@@ -60,7 +60,7 @@ MessageS* message_create(MessageTypeE type, void* payload, size_t sizePayload)
     msg->payload = payload;
     return msg;
 }
-MessageTypeE message_get_type(MessageS* msg)
+MessageTypeE message_get_type(const MessageS* restrict msg)
 {
     if(msg)
     {
@@ -72,17 +72,17 @@ MessageTypeE message_get_type(MessageS* msg)
     }
 }
 
-void* message_get_payload(MessageS* msg)
+void* message_get_payload(const MessageS* restrict msg)
 {
     return msg->payload;
 }
 
-size_t message_get_size_payload(MessageS* msg)
+size_t message_get_size_payload(const MessageS* restrict msg)
 {
     return msg->header.payloadSize;
 }
 
-char* message_create_char(MessageS* msg)
+char* message_create_char(const MessageS* restrict msg)
 {
     if(!msg)
     {
@@ -109,7 +109,7 @@ char* message_create_char(MessageS* msg)
     return ret;
 }
 
-MessageS* message_create_from_char(char* msg)
+MessageS* message_create_from_char(const char* restrict msg)
 {
     MessageS* ret = malloc(sizeof(MessageS));
     assert(ret);
@@ -132,7 +132,7 @@ MessageS* message_create_from_char(char* msg)
     return ret;
 }
 
-bool message_check(MessageS* msg)
+bool message_check(const MessageS* restrict msg)
 {
     bool ret = false;
     if(msg)
@@ -148,7 +148,7 @@ bool message_check(MessageS* msg)
 
 }
 
-void message_free(MessageS* msg)
+void message_free(MessageS* restrict msg)
 {
     if(msg)
     {

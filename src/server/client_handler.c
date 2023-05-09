@@ -33,9 +33,8 @@ typedef struct ClientHandlerSignalS
 
 /* Static Function Declarations ***************************************************************************************/
 static inline void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg);
-static void ClientHandler_handle_msg_request(char* msg);
+static void ClientHandler_handle_msg(char* msg);
 static void ClientHandler_write(ServerConnectionS* conn, ClientHandler_msg* msg);
-static void ClientHandler_parse_msg(char* msg);
 /* Global Function Definitions ****************************************************************************************/
 
 
@@ -69,7 +68,7 @@ void* clientHandler_start_thread(void* arg)
         ClientHandler_read(conn, recvMsg);
         LOG_DEBUG("Server recaived msg from client: received a msg: Thread: %d, received msg %s", threadId, recvMsg);
 
-       ClientHandler_handle_msg_request(recvMsg->buffer);
+       ClientHandler_handle_msg(recvMsg->buffer);
        const char buff[] = "Test debug";
         memcpy(writeMsg->buffer, buff, sizeof(buff));
         writeMsg->len = sizeof(buff);
@@ -99,19 +98,14 @@ void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg)
 
 }
 /**
- * @brief   Function ClientHandler_handle_msg_request
+ * @brief   Function ClientHandler_handle_msg
  *          is used to parsed msg - extract payload from msg
  *          and executing client request
  * @param msg - message from client
  */
-void ClientHandler_handle_msg_request(char* msg)
+void ClientHandler_handle_msg(char* msg)
 {
-    ClientHandler_parse_msg(msg);
-}
-
-void ClientHandler_parse_msg(char* msg)
-{
-    char temp[] = "Testowy message";
+        char temp[] = "Testowy message";
     if (strcmp(msg, temp) == 0)
         printf("OK\n");
 }

@@ -1,23 +1,12 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
-
-/* INCLUDES ***********************************************************************************************************/
 #include "client_handler.h"
-#include "common_signal.h"
+#include "common.h"
 #include "server.h"
 #include "util.h"
-/* Type Declarations **************************************************************************************************/
+#include "messages.h"
+
 typedef struct ClientHandler_msg {
-    size_t len;
-    char buffer[CLIENT_HANDLER_BUFFER_MAX_LEN];
+    int len;
+    char buffer[CLIENT_HANDLER_BUFFER_MAX_LEN]; /* this should be converted into MessageS type*/
 }ClientHandler_msg;
 
 typedef struct ClientHandlerSignalS
@@ -25,17 +14,10 @@ typedef struct ClientHandlerSignalS
     SignalS* signal;
     uint8_t id;
 }ClientHandlerSignalS;
-/* Definitions ********************************************************************************************************/
 
-/* Global Variable Definitions ****************************************************************************************/
-
-/* Local Variable Definitions *****************************************************************************************/
-
-/* Static Function Declarations ***************************************************************************************/
 static inline void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg);
 static void ClientHandler_handle_msg(char* msg);
 static void ClientHandler_write(ServerConnectionS* conn, ClientHandler_msg* msg);
-/* Global Function Definitions ****************************************************************************************/
 
 
 /* <<< Function clientHandler_start_thread */
@@ -66,18 +48,19 @@ void* clientHandler_start_thread(void* arg)
     {
         /*  Reading, writing for debug and doing requst msg, its all */
         ClientHandler_read(conn, recvMsg);
-        LOG_DEBUG("Server recaived msg from client: received a msg: Thread: %d, received msg %s", threadId, recvMsg);
+        LOG_DEBUG("Server recaived msg from client: received a msg: Thread: %d, received msg %s", threadId, recvMsg->buffer);
 
-       ClientHandler_handle_msg(recvMsg->buffer);
-       const char buff[] = "Test debug";
+        ClientHandler_handle_msg(recvMsg->buffer);
+        const char buff[] = "Test debug";
         memcpy(writeMsg->buffer, buff, sizeof(buff));
         writeMsg->len = sizeof(buff);
         ClientHandler_write(conn, writeMsg);
 
-        int* k = malloc(sizeof(int));
+/*        int* k = malloc(sizeof(int));
         *k = 5;
         SignalS* signal = common_signal_add_payload(k, sizeof(int));
         common_signal_send(5, signal);
+*/
     }
 
     close(conn->sock);
@@ -85,17 +68,16 @@ void* clientHandler_start_thread(void* arg)
     pthread_exit(0);
 }
 
-/* Static Function Definitions ****************************************************************************************/
 void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg)
 {
     /* ****  Waiting for read msg and dont returning when reading thrash **** */
     while(1)
     {
+        /* this must be stopped ;d maybe for  */
         read(conn->sock, &msg->len, sizeof(int));
         if (read(conn->sock, msg->buffer, msg->len) > 0)
             break;
     }
-
 }
 /**
  * @brief   Function ClientHandler_handle_msg
@@ -103,11 +85,39 @@ void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg)
  *          and executing client request
  * @param msg - message from client
  */
-void ClientHandler_handle_msg(char* msg)
+void ClientHandler_handle_msg(char *msg)
 {
-        char temp[] = "Testowy message";
-    if (strcmp(msg, temp) == 0)
-        printf("OK\n");
+    MessageS* toSwitch =  message_create_from_char(msg);
+    /* now check type */
+    MessageTypeE type = message_get_type(toSwitch);
+    switch (type)
+    {
+    case MESSAGE_TYPE_REQ:
+        /* IF GET REQUEST NEED TO SEND SIGNAL TO SERIAL THREAD
+            TO RESOLVE THIS REQUEST, WAIT FOR SIGNAL FROM SERIAL THREAD
+            THAT REQUEST CAN BE CONFIRMED OR REJECTED */
+        printf("get request\n");
+        MessageMicroReqS* payload = message_get_payload(toSwitch);
+        SignalS* signal = common_signal_add_payload(payload, sizeof(MessageMicroReqS));
+        /* STM 32 is first micro controler, but we need to send to thread number = offset + payload.micro */
+        common_signal_send(COMMON_THREADS_SERIAL_THREAD_OFFSET + payload->micro, signal);
+        break;
+    /*TODO: create pretty logger options to signals recaived */
+    case MESSAGE_TYPE_REJ:
+        printf("get rej\n");
+        /* THIS SHOULD NEVER BE USED */
+        break;
+    case MESSAGE_TYPE_CFM:
+        printf("get cfm\n");
+        /* THIS SHOULD NEVER BE USED */
+        break;
+    default:
+        printf("get nothing\n");
+        /* THIS SHOULD NEVER BE USED */
+        break;
+    }
+    /*TODO: need to free allocated memory, like toSwitch*/
+    free(toSwitch);
 }
 
 static void ClientHandler_write(ServerConnectionS* conn, ClientHandler_msg* msg)

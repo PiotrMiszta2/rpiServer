@@ -1,28 +1,10 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
-
-/* INCLUDES ***********************************************************************************************************/
 #include "messages.h"
-/* Definitions ********************************************************************************************************/
 
-/* Type Declarations **************************************************************************************************/
+static_assert(sizeof(MessageMicroCfmS) ==       \
+                sizeof(uint16_t) + sizeof(uint8_t) + sizeof(uint8_t),
+                "MessageMicroCfmS padded");
 
-/* Global Variable Definitions ****************************************************************************************/
-
-/* Local Variable Definitions *****************************************************************************************/
-
-/* Static Function Declarations ***************************************************************************************/
-
-/* Global Function Definitions ****************************************************************************************/
-MessageMicroCfmS* message_micro_cfm_create(MessageMicroReqTypeE type, MessageMicroReqMicroTypeE microType)
+MessageMicroCfmS* message_micro_cfm_create(const MessageMicroReqTypeE type, const MessageMicroReqMicroTypeE microType)
 {
     MessageMicroCfmS* message = calloc(1, sizeof(MessageMicroCfmS));
     assert(message);
@@ -32,7 +14,7 @@ MessageMicroCfmS* message_micro_cfm_create(MessageMicroReqTypeE type, MessageMic
     return message;
 }
 
-bool message_micro_cfm_check_value(MessageMicroCfmS* msg)
+bool message_micro_cfm_check_value(const MessageMicroCfmS* restrict msg)
 {
     bool ret = false;
     if(msg->confirm == MESSAGE_MICRO_CFM_CONFIRM_VALUE)
@@ -41,4 +23,9 @@ bool message_micro_cfm_check_value(MessageMicroCfmS* msg)
     }
     return ret;
 }
-/* Static Function Definitions ****************************************************************************************/
+
+void message_micro_cfm_free(MessageMicroCfmS* msg)
+{
+    free(msg);
+
+}

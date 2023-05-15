@@ -1,22 +1,10 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
-
-/* INCLUDES ***********************************************************************************************************/
 #include "messages.h"
 #include <stdbool.h>
-/* Definitions ********************************************************************************************************/
+
 #define MESSAGES_MAX_LENGHT     (1024)
 #define MESSAGES_SEP_LENGHT     (2)
 #define MESSAGES_PAY_LENGHT     (MESSAGES_MAX_LENGHT - ( MESSAGES_SEP_LENGHT + sizeof(MessageHeaderS)))
-/* Type Declarations **************************************************************************************************/
+
 typedef struct MessageHeaderS
 {
     uint32_t payloadSize;
@@ -36,13 +24,7 @@ typedef struct MessageS
 static_assert(  sizeof(MessageS) == \
                 sizeof(MessageHeaderS) + sizeof(void*),
                 "MessageHeaderS padded");
-/* Global Variable Definitions ****************************************************************************************/
 
-/* Local Variable Definitions *****************************************************************************************/
-
-/* Static Function Declarations ***************************************************************************************/
-
-/* Global Function Definitions ****************************************************************************************/
 MessageS* message_create(MessageTypeE type, void* restrict payload, size_t sizePayload)
 {
     MessageS* msg = malloc(sizeof(MessageS));
@@ -82,7 +64,7 @@ size_t message_get_size_payload(const MessageS* restrict msg)
     return msg->header.payloadSize;
 }
 
-char* message_create_char(const MessageS* restrict msg)
+MessageCharS* message_create_char(const MessageS* restrict msg)
 {
     if(!msg)
     {
@@ -97,7 +79,9 @@ char* message_create_char(const MessageS* restrict msg)
             return NULL;
         }
     }
-    char* ret = malloc(sizeof(MessageHeaderS) + msg->header.payloadSize + MESSAGES_SEP_LENGHT);
+    MessageCharS* ret2 = malloc(sizeof(MessageCharS));
+    size_t size = sizeof(MessageHeaderS) + msg->header.payloadSize + MESSAGES_SEP_LENGHT;
+    char* ret = malloc(size);
     assert(ret);
     memcpy(ret, &msg->header, sizeof(MessageHeaderS));
     size_t index = sizeof(MessageHeaderS);
@@ -106,28 +90,28 @@ char* message_create_char(const MessageS* restrict msg)
     memcpy(&ret[index], msg->payload, msg->header.payloadSize);
     index += msg->header.payloadSize;
     ret[index] = '\0';
-    return ret;
+    ret2->msg = ret;
+    ret2->len = size;
+    return ret2;
 }
 
-MessageS* message_create_from_char(const char* restrict msg)
+MessageS* message_create_from_char(const char* msg)
 {
     MessageS* ret = malloc(sizeof(MessageS));
     assert(ret);
     memcpy(&ret->header, msg, sizeof(MessageHeaderS));
     size_t index = sizeof(MessageHeaderS);
-    void* payload = malloc(sizeof(ret->header.payloadSize));
+    void* payload = malloc(ret->header.payloadSize);
     assert(payload);
     if(msg[index] != 2)
     {
-        LOG_ERROR("Msg separator is wrong value");
+        LOG_ERROR("Msg separator is wrong value %c", msg[index]);
+        LOG_ERROR("Message is: %s", msg);
     }
+
     index++;
-    memcpy(payload, &msg[index], sizeof(ret->header.payloadSize));
+    memcpy(payload, &msg[index], ret->header.payloadSize);
     index += ret->header.payloadSize;
-    if(msg[index] != '\0')
-    {
-        LOG_ERROR("Msg separator is wrong value");
-    }
     ret->payload = payload;
     return ret;
 }
@@ -158,4 +142,3 @@ void message_free(MessageS* restrict msg)
     free(msg);
 
 }
-/* Static Function Definitions ****************************************************************************************/

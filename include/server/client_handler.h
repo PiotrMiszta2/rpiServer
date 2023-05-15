@@ -17,19 +17,13 @@
 #include <stdint.h>
 #include "common_signal.h"
 #include "server_defs.h"
-/* Definitions ********************************************************************************************************/
+
 /**
  * @def CLIENT_HANDLER_BUFFER_MAX_LEN
  * @brief max len of msg sending by client
  */
 
-/* Type Declarations **************************************************************************************************/
 
-/* Global Variable Definitions ****************************************************************************************/
-
-/* Static Function Declarations ***************************************************************************************/
-
-/* Global Function Declarations ***************************************************************************************/
 /**
  * @brief   function clientHandler_start_thread
  *          starting thread after client connect to server

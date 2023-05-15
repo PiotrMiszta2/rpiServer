@@ -1,32 +1,17 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
-
-/* INCLUDES ***********************************************************************************************************/
 #include "client_signal.h"
 #include "util.h"
 #include <pthread.h>
-/* Definitions ********************************************************************************************************/
-#define CLIENT_SIGNAL_MAX_THREADS   2
-/* Type Declarations **************************************************************************************************/
-/* Global Variable Definitions ****************************************************************************************/
-static Queue** signal_que;
-/* Local Variable Definitions *****************************************************************************************/
 
-/* Static Function Declarations ***************************************************************************************/
+#define CLIENT_SIGNAL_MAX_THREADS   2
+
+static Queue** signal_que;
+
 static inline void client_signal_free_queue(void* arg)
 {
     SignalS* sig = (SignalS*)(arg);
     common_signal_free(sig);
 }
-/* Global Function Definitions ****************************************************************************************/
+
 void client_signal_init(void) //each id shoud have own que
 {
     signal_que = malloc(queue_sizeof() * CLIENT_SIGNAL_MAX_THREADS);
@@ -71,4 +56,3 @@ void client_signal_destroy(void)
     }
     free(signal_que);
 }
-/* Static Function Definitions ****************************************************************************************/

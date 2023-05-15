@@ -1,43 +1,28 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
-
-/* INCLUDES ***********************************************************************************************************/
 #include "serial_signal.h"
 #include "queue.h"
 #include "logger.h"
 #include "common_thread.h"
 #include <assert.h>
 #include <pthread.h>
-/* Definitions ********************************************************************************************************/
+
 #define SERIAL_SIGNAL_MAX_THREADS   2
-/* Type Declarations **************************************************************************************************/
 
-/* Global Variable Definitions ****************************************************************************************/
-
-/* Local Variable Definitions *****************************************************************************************/
 static Queue** signal_que;
 static pthread_mutex_t* mutex;
 static sem_t* queEmpty;
 static sem_t* queFull;
-/* Static Function Declarations ***************************************************************************************/
+
 static inline uint8_t getId(uint8_t id)
 {
     return id - COMMON_THREADS_SERIAL_THREAD_OFFSET;
 }
+
 static inline void serial_signal_free_queue(void* arg)
 {
     SignalS* sig = (SignalS*)(arg);
     common_signal_free(sig);
 }
-/* Global Function Definitions ****************************************************************************************/
+
 void serial_signal_init(void) //each id shoud have own que
 {
     signal_que = malloc(queue_sizeof() * SERIAL_SIGNAL_MAX_THREADS);
@@ -102,4 +87,3 @@ void serial_signal_destroy(void)
     }
     free(signal_que);
 }
-/* Static Function Definitions ****************************************************************************************/

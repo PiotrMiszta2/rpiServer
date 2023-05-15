@@ -1,29 +1,8 @@
 #ifndef RASPBERRY_SERIAL_SIGNAL_H
 #define RASPBERRY_SERIAL_SIGNAL_H
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
 
-
-/* INCLUDES ***********************************************************************************************************/
 #include <stdint.h>
 #include "common.h"
-/* Definitions ********************************************************************************************************/
-
-/* Type Declarations **************************************************************************************************/
-
-/* Global Variable Definitions ****************************************************************************************/
-
-/* Static Function Declarations ***************************************************************************************/
-
-/* Global Function Declarations ***************************************************************************************/
 /*  NOTE:   each file of existing component like serial client_handler
  *          need to have file *_signal.h and *_signal.c in this file
  *          need to have functions like
@@ -36,10 +15,24 @@
  *          queue for all threads, bcs its not much threds and queue have only 32 bites
  * */
 
-
+/**
+ * @brief init variables like que and mutex and semaphores
+ *
+*/
 void serial_signal_init(void);
+/**
+ * @brief pushing to specify que by id signal
+ *
+*/
 void serial_signal_add_to_queue(SignalS* signal, uint8_t id);
+/**
+ * @brief checking for signals in que specified by id
+ *
+*/
 int serial_signal_check_signal(uint8_t id);
+/**
+ * @brief pop from que signal
+*/
 SignalS* serial_signal_get(uint8_t id);
 void serial_signal_destroy(void);
 

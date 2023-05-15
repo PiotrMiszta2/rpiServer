@@ -1,0 +1,6 @@
+#ifndef RASPBERRY_SERIAL_TYPES_H
+#define RASPBERRY_SERIAL_TYPES_H
+
+typedef enum
+
+#endif //RASPBERRY_SERIAL_TYPES_H

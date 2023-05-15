@@ -1,30 +1,12 @@
 #ifndef RASPBERRY_DOUBLELINKEDLIST_H
 #define RASPBERRY_DOUBLELINKEDLIST_H
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
 
-
-/* INCLUDES ***********************************************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-/* Definitions ********************************************************************************************************/
 
-/* Type Declarations **************************************************************************************************/
 typedef struct DoubleLinkedList DoubleLinkedList;
 typedef DoubleLinkedList DLL;
-/* Global Variable Definitions ****************************************************************************************/
 
-/* Static Function Declarations ***************************************************************************************/
-
-/* Global Function Declarations ***************************************************************************************/
 /**
  * @brief Constructor for double linked list
  * @param custom_free function to free data passed into double linked list

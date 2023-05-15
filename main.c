@@ -26,6 +26,7 @@ int main(void)
 
     uint8_t stm32Id = 5;
     uint8_t arduinoId = 6;
+    //first is stm32
     common_thread_create(&serialThreadStm32, NULL, serial_thread_start, &stm32Id, 5);
     common_thread_create(&serialThreadArduino, NULL, serial_thread_start, &arduinoId, 6);
     common_thread_create(&serverThread, NULL, server_thread, NULL, 1);

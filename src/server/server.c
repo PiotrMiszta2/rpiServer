@@ -1,40 +1,25 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
-/* INCLUDES ***********************************************************************************************************/
 #include "server.h"
 #include "logger.h"
 #include "client_handler.h"
 #include "server_defs.h"
 #include "common_thread.h"
 #include <assert.h>
-/* Definitions ********************************************************************************************************/
+
 #define SERVER_PORT         8080
 #define SERVER_MAX_LISTEN   5
 #define SERVER_MAX_CLIENTS  3
-/* Type Declarations **************************************************************************************************/
 
-/* Global Variable Definitions ****************************************************************************************/
 static uint8_t numberOfClients;
 static pthread_t client_thread[SERVER_MAX_CLIENTS];
-/* Local Variable Definitions *****************************************************************************************/
+
 static ServerS* serverS_p;
 
-/* Static Function Declarations ***************************************************************************************/
 static inline void server_socket(void);
 static inline void server_bind(void);
 static void server_create_serverS(void);
 static inline ServerConnectionS* server_allocate_connection(void);
 static int server_start_thread(ServerConnectionS* connectionS_p);
 
-/* Global Function Definitions ****************************************************************************************/
 void server_start(void)
 {
     numberOfClients = 0;
@@ -78,7 +63,7 @@ void server_listen(void)
         }
     }
 }
-/* Static Function Definitions ****************************************************************************************/
+
 void server_socket(void)
 {
     serverS_p->sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

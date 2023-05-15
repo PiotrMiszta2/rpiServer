@@ -1,18 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
 
-
-/* INCLUDES ***********************************************************************************************************/
 #include <stdlib.h> //for malloc
 #include <stdio.h>
 #include <stdarg.h> //for variadic functions
@@ -20,7 +8,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdbool.h>
-/* Definitions ********************************************************************************************************/
+
 #define LOGGER_PRINT_TERMINAL
 /**
  * @def FERROR
@@ -64,7 +52,7 @@
 #define AUTHOR      ("Piotr Miszta")
 #define VERSION     ("1.0")
 #define NAME        ("Server on RPi 3B")
-/* Type Declarations **************************************************************************************************/
+
 /**
  * @enum LoggerTypeE
  * specify type of logging message
@@ -77,12 +65,6 @@ typedef enum LoggerTypeE {
     ERROR,
     FATAL,
 }LoggerTypeE;
-
-/* Global Variable Definitions ****************************************************************************************/
-
-/* Static Function Declarations ***************************************************************************************/
-
-/* Global Function Declarations ***************************************************************************************/
 
 /**
  * @brief logger_init()

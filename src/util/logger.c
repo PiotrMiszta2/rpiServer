@@ -1,19 +1,5 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file logger.c
- * @brief Source file with logger functions implementation.
- *
- **********************************************************************************************************************/
-
-
-/* INCLUDES ***********************************************************************************************************/
 #include "logger.h"
 
-/* Definitions ********************************************************************************************************/
 #define LOGGER_NO_FILE
 #define LOGGER_NO_THREAD
 #define LOGGER_COLOR
@@ -36,7 +22,6 @@
 
 #endif
 
-/* Type Declarations **************************************************************************************************/
 typedef struct  Logger {         //808
     va_list list;               //24
     FILE* file;                 //8
@@ -57,16 +42,12 @@ typedef struct  Logger {         //808
 
 }Logger;
 
-/* Global Variable Definitions ****************************************************************************************/
 
-/* Local Variable Definitions *****************************************************************************************/
 static Logger* logger;
 
-/* Static Function Declarations ***************************************************************************************/
 static void logger_print_terminal(void);
 static void logger_print(void);
 
-/* Global Function Definitions ****************************************************************************************/
 void logger_init(const char* filename) {
     logger = malloc(sizeof(Logger));
     if(logger == NULL) {
@@ -176,7 +157,7 @@ void* logger_thread(void* arg) {
     return NULL;
 }
 #endif
-/* Static Function Definitions ****************************************************************************************/
+
 void logger_print(void) {
     va_list copyOfLogger;
     va_copy(copyOfLogger, logger->list);

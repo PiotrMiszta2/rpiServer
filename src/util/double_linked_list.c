@@ -1,18 +1,6 @@
-/**
- * Copyright
- **********************************************************************************************************************/
-/**
- *
- *
- * @file
- * @brief
- *
- **********************************************************************************************************************/
-
-/* INCLUDES ***********************************************************************************************************/
 #include "double_linked_list.h"
 #include "logger.h"
-/* Type Declarations **************************************************************************************************/
+
 typedef struct Node {
     void* data;
     struct Node* next;
@@ -26,17 +14,13 @@ typedef struct DoubleLinkedList{
     void (*dll_free)(void* arg);
     int (*dll_cmp)(void* arg, void* arg2);
 }DoubleLinkedList;
-/* Definitions ********************************************************************************************************/
+
 #define DLL_LOG_NULL_DATA
 #define DLL_EMPTY()         dll_list_empty(__FILE__, __func__, __LINE__)
-/* Global Variable Definitions ****************************************************************************************/
 
-/* Local Variable Definitions *****************************************************************************************/
 static inline void dll_list_empty(const char* file, const char* func, int line);
 static inline Node* dll_node_malloc(void);
-/* Static Function Declarations ***************************************************************************************/
 
-/* Global Function Definitions ****************************************************************************************/
 DoubleLinkedList* dll_create(void (*custom_free)(void* data),
                              int (*custom_cmp)(void* arg, void* arg2))
 {
@@ -303,7 +287,7 @@ size_t dll_get_size(DoubleLinkedList* doubleLinkedList)
 {
     return doubleLinkedList->size;
 }
-/* Static Function Definitions ****************************************************************************************/
+
 // FUNCTION TO CALL logger log bcs a lot of checking that pointer to struct is NULL
 void dll_list_empty(const char* file, const char* func, int line)
 {

@@ -26,6 +26,6 @@
 
 /* Global Function Declarations ***************************************************************************************/
 void* serial_thread_start(void* arg);
-void serial_signal_handler(SignalS* signal);
+
 
 #endif //RASPBERRY_SERIAL_THREAD_H

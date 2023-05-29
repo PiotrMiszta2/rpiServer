@@ -271,7 +271,7 @@ SerialPort* serial_create(Serial_BaudRate baudRate,
     if(serialPort == NULL) {
         perror("Failed allocated memory, aborted");
         LOG_FATAL("CAN'T ALLOC MEMORY");
-        abort();
+        return NULL;
     }
     serialPort->device = device;
     serialPort->baudRate = baudRate;
@@ -301,13 +301,11 @@ void serial_openPort(SerialPort* serial) {
     if(serial->device == NULL) {
         perror("Cant open file when device is nullptr");
         LOG_ERROR("Can't open nullptr file");
-        abort();
     }
     serial->fileDesc = open(serial->device, O_RDWR);
     if(serial->fileDesc == -1){
         perror("Cant open file ");
         LOG_ERROR("Can't open %s file", serial->device);
-        abort();
     }
     serial->state = OPEN;
 }
@@ -356,6 +354,10 @@ void serial_setEcho(bool Enabled, SerialPort* serial) {
  ******************************************************************************************************/
 int serial_write(const char* msg, SerialPort* serial) {
     ssize_t writeResult;
+    if(serial == NULL) {
+        LOG_ERROR("Serial is null pointer");
+        return -1;
+    }
     if(serial->state == CLOSED) {
        LOG_ERROR("Write to closed port");
        return SERIAL_E_WRITE;
@@ -364,7 +366,8 @@ int serial_write(const char* msg, SerialPort* serial) {
        LOG_ERROR("Write to port with file descriptor < 0");
        return SERIAL_E_WRITE;
    }
-   writeResult = write(serial->fileDesc, msg, strlen(msg));
+   char buff[] = {"1"};
+   writeResult = write(serial->fileDesc, buff, sizeof(buff));
    return (int)writeResult;
 }
 

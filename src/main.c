@@ -8,6 +8,7 @@
 #include "serial_thread.h"
 #include "messages.h"
 #include "queue.h"
+#include "serial_tty.h"
 static inline void init(void)
 {
     logger_init("log.log");

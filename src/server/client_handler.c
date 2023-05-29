@@ -11,7 +11,8 @@
 
 /* INCLUDES ***********************************************************************************************************/
 #include "client_handler.h"
-#include "common_signal.h"
+#include "common.h"
+#include "messages.h"
 #include "server.h"
 #include "util.h"
 /* Type Declarations **************************************************************************************************/
@@ -35,7 +36,6 @@ typedef struct ClientHandlerSignalS
 static inline void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg);
 static void ClientHandler_handle_msg_request(char* msg);
 static void ClientHandler_write(ServerConnectionS* conn, ClientHandler_msg* msg);
-static void ClientHandler_parse_msg(char* msg);
 /* Global Function Definitions ****************************************************************************************/
 
 
@@ -63,22 +63,17 @@ void* clientHandler_start_thread(void* arg)
     ServerConnectionS * conn = (ServerConnectionS *)arg;
     threadId = conn -> id;
     //TODO: (Piotr) end loop
-    for(int i = 0;i < 100; i++)
+    while(1)
     {
         /*  Reading, writing for debug and doing requst msg, its all */
         ClientHandler_read(conn, recvMsg);
         LOG_DEBUG("Server recaived msg from client: received a msg: Thread: %d, received msg %s", threadId, recvMsg);
 
-       ClientHandler_handle_msg_request(recvMsg->buffer);
-       const char buff[] = "Test debug";
+        ClientHandler_handle_msg_request(recvMsg->buffer);
+        const char buff[] = "Test debug";
         memcpy(writeMsg->buffer, buff, sizeof(buff));
         writeMsg->len = sizeof(buff);
         ClientHandler_write(conn, writeMsg);
-
-        int* k = malloc(sizeof(int));
-        *k = 5;
-        SignalS* signal = common_signal_add_payload(k, sizeof(int));
-        common_signal_send(5, signal);
     }
 
     close(conn->sock);
@@ -106,15 +101,23 @@ void ClientHandler_read(ServerConnectionS* conn, ClientHandler_msg* msg)
  */
 void ClientHandler_handle_msg_request(char* msg)
 {
-    ClientHandler_parse_msg(msg);
+    /* get msg and create from it signal */
+    MessageS* messag = message_create_from_char(msg);
+    switch(message_get_type(messag)) {
+        case MESSAGE_TYPE_REQ:
+            LOG_INFO("Got request msg");
+            MessageMicroReqS* payload = message_get_payload(messag);
+
+            SignalS* signal = common_signal_add_payload(payload, message_get_size_payload(messag));
+
+            common_signal_send(payload->micro + COMMON_THREADS_SERIAL_THREAD_OFFSET ,signal);
+            break;
+        default:
+            LOG_ERROR("unknown signal");
+            break;\
+    }
 }
 
-void ClientHandler_parse_msg(char* msg)
-{
-    char temp[] = "Testowy message";
-    if (strcmp(msg, temp) == 0)
-        printf("OK\n");
-}
 
 static void ClientHandler_write(ServerConnectionS* conn, ClientHandler_msg* msg)
 {

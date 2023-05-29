@@ -12,7 +12,7 @@ include_directories(${INCLUDE_DIR}/server
                     ${INCLUDE_DIR}/messages
                     ${INCLUDE_DIR}/serial
                     ${INCLUDE_DIR}/common)
-
+file(GLOB SRCS "{CMAKE_SOURCE_DIR}/src/*/*.c")
 file(GLOB message_src
         "${SOURCE_DIR}/messages/*.c")
 file(GLOB util_src
@@ -30,4 +30,5 @@ add_executable(raspberry    src/main.c
                             ${server_src}
                             ${serial_src}
                             ${common_src}
+                            ${SRCS}
 )

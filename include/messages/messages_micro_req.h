@@ -13,27 +13,34 @@
 
 
 /* INCLUDES ***********************************************************************************************************/
-#include "util.h"
-#include "common.h"
-#include <assert.h>
-/* Definitions ********************************************************************************************************/
+#include "messages_types.h"
+#include "messages_micro.h"
 
+#include <stdint.h>
+#include <stdbool.h>
+/* Definitions ********************************************************************************************************/
+/**
+ * @brief to wrap function
+ *
+*/
+#define message_create_micro_req_create(msg)           ( message_create(MESSAGE_TYPE_REQ, msg, sizeof(MessageMicroReqS)) )
+#define message_micro_req_get_payload(msg)             ( (MessageMicroReqS*) (message_get_payload(msg)) )
 /* Type Declarations **************************************************************************************************/
-/* struct for payload in msg */
-typedef struct MessageMicroReq
+
+typedef struct MessageMicroReqS
 {
     uint16_t request;
     uint8_t micro;
-    uint8_t _padded;
-}MessageMicroReq;
+    uint8_t confirm;
+}MessageMicroReqS;
 //for all messages type need to static_assert padding
-static_assert(  sizeof(MessageMicroReq) ==  \
-                sizeof(uint16_t) + sizeof(uint8_t) * 2,
-                "MessageMicroReq padded");
+
 /* Global Variable Definitions ****************************************************************************************/
 
 /* Static Function Declarations ***************************************************************************************/
 
 /* Global Function Declarations ***************************************************************************************/
-
+MessageMicroReqS* message_micro_req_create(const MessageMicroReqTypeE type, const MessageMicroReqMicroTypeE microType);
+bool message_micro_req_check_value(const MessageMicroReqS* restrict msg);
+void message_micro_req_free(MessageMicroReqS* msg);
 #endif //RASPBERRY_MESSAGES_REQ_MICRO_H

@@ -366,8 +366,7 @@ int serial_write(const char* msg, SerialPort* serial) {
        LOG_ERROR("Write to port with file descriptor < 0");
        return SERIAL_E_WRITE;
    }
-   char buff[] = {"1"};
-   writeResult = write(serial->fileDesc, buff, sizeof(buff));
+   writeResult = write(serial->fileDesc, msg, sizeof(char));
    return (int)writeResult;
 }
 
